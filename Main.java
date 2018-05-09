@@ -5,7 +5,8 @@ import java.util.Scanner;
 
 public class Main {
 	
-	public static void TouR(String linha) {
+	//verifica se é necessário usar tabela ou resolução
+	public void TouR(String linha) {
 		
 	}
 	
