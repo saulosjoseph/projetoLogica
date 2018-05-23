@@ -1,3 +1,5 @@
+package projeto;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -5,7 +7,7 @@ import java.util.Scanner;
 
 public class Main {
 
-	// verifica se Ã© necessÃ¡rio usar tabela ou resoluÃ§Ã£o, se for mÃ©todo da tabela,
+	// verifica se é necessário usar tabela ou resolução, se for método da tabela,
 	// retorna true
 	public static boolean TouR(String linha) {
 		if (linha.substring(0, 1).equals("T")) {
@@ -19,29 +21,40 @@ public class Main {
 
 		int problemas = 0;
 		int problema = 1;
+		Resolucao re = new Resolucao();
 
 		Scanner ler = new Scanner(System.in);
 
-		System.out.printf("Informe o local do arquivo texto:\n");
+		System.out.printf("Informe o local do arquivo texto: ");
 		String nome = ler.nextLine();
 
-		System.out.printf("\nConteÃºdo do arquivo texto:\n");
 		try {
 			FileReader arq = new FileReader(nome);
 			BufferedReader lerArq = new BufferedReader(arq);
 
-			String linha = lerArq.readLine(); // lÃª a primeira linha
-			// a variÃ¡vel "linha" recebe o valor "null" quando o processo
-			// de repetiÃ§Ã£o atingir o final do arquivo texto
-			problemas = Integer.parseInt(linha); // primeira linha da entrada dÃ¡ a quantidade de problemas
+			String linha = lerArq.readLine(); // lê a primeira linha
+			// a variável "linha" recebe o valor "null" quando o processo
+			// de repetição atingir o final do arquivo texto
+			problemas = Integer.parseInt(linha); // primeira linha da entrada dá a quantidade de problemas
 			while (problemas > 0) {
-				// System.out.printf("%s\n", linha); //imprime o arquivo
-
-				linha = lerArq.readLine(); // lÃª da segunda atÃ© a Ãºltima linha
+				linha = lerArq.readLine(); // lê da segunda até a última linha
+				//checa se é Tabela ou Resolução
 				if (TouR(linha)) {
-					System.out.println("#" + problema+ " esse Ã© tabela");
-				} else
-					System.out.println("#" + problema+ " esse Ã© resoluÃ§Ã£o");
+					//true = tabela
+					System.out.println("#" + problema+ "\n esse é tabela\n");
+				} else {
+					//retira os 3 primeiros caracteres "RE ";
+					linha = linha.replaceFirst("RE ", "");
+					//coloca as subexpressões na vetor
+					re.subExp(linha);
+					//checa se é fnc
+					if(!re.fnc(linha)) {
+						//false = não fnc;
+						System.out.println("Problema #" + problema+ "\nNão está na FNC.\n");
+					} else {
+						System.out.println("#" + problema+ "\n esse é talvez\n");
+					}
+				}
 				problemas--;
 				problema++;
 			}
