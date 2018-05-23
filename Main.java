@@ -19,8 +19,8 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		int problemas = 0;
-		int problema = 1;
+		int casosTotal = 0;
+		int casoAtual = 1;
 		Resolucao re = new Resolucao();
 
 		Scanner ler = new Scanner(System.in);
@@ -35,13 +35,13 @@ public class Main {
 			String linha = lerArq.readLine(); // lê a primeira linha
 			// a variável "linha" recebe o valor "null" quando o processo
 			// de repetição atingir o final do arquivo texto
-			problemas = Integer.parseInt(linha); // primeira linha da entrada dá a quantidade de problemas
-			while (problemas > 0) {
+			casosTotal = Integer.parseInt(linha); // primeira linha da entrada dá a quantidade de problemas
+			while (casosTotal > 0) {
 				linha = lerArq.readLine(); // lê da segunda até a última linha
 				//checa se é Tabela ou Resolução
 				if (TouR(linha)) {
 					//true = tabela
-					System.out.println("#" + problema+ "\n esse é tabela\n");
+					System.out.println("Problema #" + casoAtual+ "\nEsse é tabela\n");
 				} else {
 					//retira os 3 primeiros caracteres "RE ";
 					linha = linha.replaceFirst("RE ", "");
@@ -50,13 +50,25 @@ public class Main {
 					//checa se é fnc
 					if(!re.fnc(linha)) {
 						//false = não fnc;
-						System.out.println("Problema #" + problema+ "\nNão está na FNC.\n");
+						System.out.println("Problema #" + casoAtual+ "\nNão está na FNC.\n");
 					} else {
-						System.out.println("#" + problema+ "\n esse é talvez\n");
+						//se for fnc, checa se todas as calusulas são de Horn
+						if(!re.hornClause()) {
+							//false = nem todas são Horn
+							System.out.println("Problema #" + casoAtual +"\nNem todas as cláusulas são de Horn.\n");
+						} else {
+							//se todas forem Horn, checa se é satisfatível
+							if(!re.insat()) {
+								System.out.println("Problema #" + casoAtual +"\nSim, é satisfatível.\n");
+							} else {
+								System.out.println("Problema #" + casoAtual +"\nNão, não é satisfatível.\n");
+							}
+						}
 					}
 				}
-				problemas--;
-				problema++;
+				casosTotal--;
+				casoAtual++;
+				re.limpar();
 			}
 
 			arq.close();
